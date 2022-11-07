@@ -1,0 +1,9 @@
+/venv
+/.idea
+
+NewsPortal/NewsPortal/.env
+
+NewsPortal/accounts/_pycache_
+NewsPortal/fpages/_pycache_
+NewsPortal/news_app/_pycache_
+NewsPortal/NewsPortal/_pycache_
