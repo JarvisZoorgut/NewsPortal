@@ -1,9 +1,11 @@
 venv/
 .idea/
+backup/
+__pycache__/
 
 NewsPortal/NewsPortal/.env
 
-__pycache__/
+
 
 *.7z
 *.zip

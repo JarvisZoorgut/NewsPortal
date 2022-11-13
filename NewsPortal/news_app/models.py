@@ -19,7 +19,7 @@ class Author(models.Model):
 		self.save()
 
 	def __str__(self):
-		return self.authorUser
+		return self.authorUser.username
 
 class Category(models.Model):
 	categoryName = models.CharField(max_length=64, unique=True)
@@ -59,14 +59,14 @@ class Post(models.Model):
 		return f'{self.title.title()}: {self.content}. Автор: {self.author}, категория: {self.category}, рейтинг: {self.rating}'
 
 	def get_absolute_url(self):
-		return reverse('posts_detail', args=[str(self.id)])
+		return f'/news/{self.id}'
 
 class PostCategory(models.Model):
 	postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
 	categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-	def __str__(self):
-		return f' {self.post.title} | {self.category.categoryName}'
+#	def __str__(self):
+#		return f' {self.post.title} | {self.category.categoryName}'
 
 
 class Comment(models.Model):

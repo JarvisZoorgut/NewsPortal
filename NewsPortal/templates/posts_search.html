@@ -14,17 +14,21 @@
 
    <hr>
    {% if posts %}
-       <table>
-           {% for post in posts %}
-           <tr>
-               <td>{{   post.title   }}</td>
-               <td>{{   post.postTime|date:' d M Y H:i:s '   }}</td>
-               <td>{{   post.content|truncatewords:20|censor   }}</td>
-
-           </tr>
-           {% endfor %}
-
-       </table>
+        <ul class="list-group list-group-flush">
+            {% for post in posts %}
+                <li class="list-group-item">
+                    <small class="fw-bold">{{ post.postTime | date:'d M Y' }}</small>
+                    <a href="{% url 'posts_detail' post.id %}">{{ post.title }}</a>
+                    <small class="text-muted">(автор: {{ post.author }})</small> <br>
+                    <small class="fw-bold">категории:
+                        {% for category in post.category.all %}
+                                   <a href="{% url 'category_list' category.id %}"> | {{ category }} | </a>
+                        {% endfor %}
+                    </small>
+                    <p>{{post.content | truncatechars:210}}</p>
+                </li>
+            {% endfor %}
+        </ul>
    {% else %}
        <h2>Новостей нет</h2>
    {% endif %}
