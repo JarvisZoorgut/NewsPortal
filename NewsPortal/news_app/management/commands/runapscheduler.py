@@ -16,7 +16,7 @@ from news_app.models import Post, Category
 logger = logging.getLogger(__name__)
 
 
-# наша задача по выводу текста на экран
+#наша задача по выводу текста на экран
 def my_job():
 	#  Your job processing logic here...
 	today = datetime.datetime.now()

@@ -6,9 +6,11 @@ from datetime import datetime
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+
 from .forms import PostForm
-from .models import Post, Category
+from .models import Post, Category, PostCategory
 from .filters import PostFilter
+
 
 class PostList(ListView):
     raise_exception = True
@@ -23,11 +25,13 @@ class PostList(ListView):
         context['time_now'] = datetime.utcnow()
         return context
 
+
 class PostDetail(DetailView):
     raise_exception = True
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
 
 class PostSearch(ListView):
     model = Post
@@ -46,6 +50,7 @@ class PostSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
+
 class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news_app.add_post')
     form_class = PostForm
@@ -56,6 +61,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
         post = form.save(commit=False)
         post.categoryType = 'NW'
         return super().form_valid(form)
+
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news_app.add_post')
@@ -68,17 +74,20 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
         post.categoryType = 'AR'
         return super().form_valid(form)
 
+
 class PostUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('news_app.change_post')
     form_class = PostForm
     model = Post
     template_name = 'posts_edit.html'
 
+
 class PostDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('news_app.delete_post')
     model = Post
     template_name = 'posts_delete.html'
     success_url = reverse_lazy('posts_list')
+
 
 class CategoryListView(ListView):
     model = Post
@@ -104,3 +113,4 @@ def subscribe(request, pk):
 
     message = 'Вы успешно подписались на рассылку новостей категории '
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
