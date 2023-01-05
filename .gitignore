@@ -10,3 +10,4 @@ NewsPortal/NewsPortal/.env
 *.7z
 *.zip
 *.rar
+*.log
