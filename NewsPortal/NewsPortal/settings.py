@@ -240,7 +240,7 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'errors.log',
-            'formatter': 'general_formatter',
+            'formatter': 'error_formatter',
         },
         'security': {
             'level': 'DEBUG',
