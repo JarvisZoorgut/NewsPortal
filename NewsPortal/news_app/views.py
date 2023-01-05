@@ -11,6 +11,9 @@ from .forms import PostForm
 from .models import Post, Category, PostCategory
 from .filters import PostFilter
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class PostList(ListView):
     raise_exception = True

@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -166,12 +166,19 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 SITE_URL = 'http://127.0.0.1:8000'
 
+ADMINS = (
+    ('admin', 'SFtestmail@yandex.ru'),
+)
+
+EMAIL_SUBJECT_PREFIX = '[SuperService]'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
+SERVER_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_FILE_PATH = 'email-massages'
 
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 
@@ -182,3 +189,116 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_logger': False,
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'WARNING_console', 'ERROR_CRITICAL_console', 'general'],
+            'level': 'DEBUG',
+        },
+        'django.request, django.server, django.template, django.db.backends': {
+            'handlers': ['errors'],
+            'level': 'ERROR',
+        },
+        'django.security': {
+            'handlers': ['security'],
+            'level': 'DEBUG',
+        },
+        'django.request, django.server': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_formatter',
+            'filters': ['require_debug_true'],
+        },
+        'WARNING_console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'WARNING_console_formatter',
+            'filters': ['require_debug_true'],
+        },
+        'ERROR_CRITICAL_console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'ERROR_CRITICAL_console_formatter',
+            'filters': ['require_debug_true'],
+        },
+        'general': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'general_formatter',
+            'filters': ['require_debug_false'],
+        },
+        'errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'general_formatter',
+        },
+        'security': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'security_formatter',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+            'formatter': 'mail_formatter',
+            'filters': ['require_debug_false'],
+        },
+    },
+    'formatters': {
+        'console_formatter': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'WARNING_console_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'ERROR_CRITICAL_console_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'general_formatter': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'error_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'security_formatter': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'mail_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        },
+    },
+}
