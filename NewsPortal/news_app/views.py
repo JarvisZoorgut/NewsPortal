@@ -58,11 +58,13 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news_app.add_post')
     form_class = PostForm
     model = Post
-    template_name = 'posts_edit.html'
+    template_name = 'posts_create.html'
 
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'NW'
+        post.author = self.request.user.author
+        post.save()
         return super().form_valid(form)
 
 
@@ -70,11 +72,13 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news_app.add_post')
     form_class = PostForm
     model = Post
-    template_name = 'posts_edit.html'
+    template_name = 'posts_create.html'
 
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = 'AR'
+        post.author = self.request.user.author
+        post.save()
         return super().form_valid(form)
 
 
